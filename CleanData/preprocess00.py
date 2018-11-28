@@ -77,13 +77,13 @@ df_minority = data_df[data_df.loan_status == 0]
 # Upsample minority class
 df_majority_downsampled = resample(df_majority,
                                  replace=False,  # sample with replacement
-                                 n_samples=30000,  # to match majority class
+                                 n_samples=50000,  # to match majority class
                                  random_state=123)  # reproducible results
 
 # Upsample minority class
 df_minority_downsampled = resample(df_majority,
                                  replace=False,  # sample with replacement
-                                 n_samples=30000,  # to match majority class
+                                 n_samples=50000,  # to match majority class
                                  random_state=123)  # reproducible results
 
 # Combine majority class with upsampled minority class
