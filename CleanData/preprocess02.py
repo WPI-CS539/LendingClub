@@ -4,13 +4,6 @@ data = pd.read_csv("clean_result01.csv", header=0)
 data_df = pd.DataFrame(data)
 
 ###### Modify issue_d to integer ######
-def cleanissued(x):
-    x = x.replace("Dec-2013", "43").replace("Nov-2013", "44").replace("Oct-2013", "45")\
-        .replace("Sep-2013", "46").replace("Aug-2013", "47")
-    return int(x)
-data_df['issue_d'] = data_df['issue_d'].apply(cleanissued)
-
-###### Modify earliest_cr_line to integer ######
 def cleanyearmonth(x):
     month = x[:3]
     monthN = 1
@@ -43,14 +36,19 @@ def cleanyearmonth(x):
     if x < 0:
         x = 0
     return int(x)
+# def cleanissued(x):
+#     x = x.replace("Dec-2013", "43").replace("Nov-2013", "44").replace("Oct-2013", "45")\
+#         .replace("Sep-2013", "46").replace("Aug-2013", "47")
+#     return int(x)
+data_df['issue_d'] = data_df['issue_d'].apply(cleanyearmonth)
+
+###### Modify earliest_cr_line to integer ######
 data_df['earliest_cr_line'] = data_df['earliest_cr_line'].apply(cleanyearmonth)
 
 ###### Modify last_payment_date to integer ######
-data_df = data_df[data_df['last_pymnt_d'].notnull()]
 data_df['last_pymnt_d'] = data_df['last_pymnt_d'].apply(cleanyearmonth)
 
 ###### Modify last_credit_pull_d to integer ######
-data_df = data_df[data_df['last_credit_pull_d'].notnull()]
 data_df['last_credit_pull_d'] = data_df['last_credit_pull_d'].apply(cleanyearmonth)
 
 ## Convert initial_list_status to 0 or 1
