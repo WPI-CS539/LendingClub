@@ -1,11 +1,13 @@
 import pandas as pd
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 data = pd.read_csv("clean_result02.csv", header=0)
 data_df = pd.DataFrame(data)
 
 # Separating out the features
 x = data_df.loc[:, data_df.columns != 'loan_status'].values
+x = StandardScaler().fit_transform(x)
 # Separating out the target
 y = data_df.loc[:, ['loan_status']].values
 pca = PCA(n_components=9)
