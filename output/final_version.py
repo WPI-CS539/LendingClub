@@ -7,7 +7,8 @@ from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
 from sklearn import tree, svm
 from sklearn.ensemble import RandomForestClassifier
-
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import confusion_matrix, classification_report
 
 def load_data():
     '''
@@ -18,6 +19,8 @@ def load_data():
     pwd = os.getcwd()
     data = pd.read_csv(os.path.join(pwd, "data", file_name1)).values
     data_pca = pd.read_csv(os.path.join(pwd, "data", file_name2)).values
+    np.random.shuffle(data)
+    np.random.shuffle(data_pca)
     Y = data[:, -1]
     X = np.delete(data, -1, axis=1)
     Y_pca = data_pca[:, -1]
@@ -144,16 +147,41 @@ def svm_classification(X, Y, cv):
     plt.title('Evaluation of SVM model')
     plt.xlabel('The Kernel')
     plt.ylabel('Performance')
+    plt.show()
+
+
+def NN_classification(X, Y, cv):
+    clf_NN = MLPClassifier(hidden_layer_sizes=(9, 9, 9,),
+                  activation='tanh', batch_size='auto',
+                  learning_rate ='constant', learning_rate_init = 0.001,
+                  max_iter = 200,
+                  shuffle = True,
+                  verbose = True,
+                  warm_start = False,
+                  early_stopping = True, n_iter_no_change = 30, validation_fraction = 0.1,
+                  beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08)
+
+    X_test = X[20000:25000,:]
+    Y_test = Y[20000:25000]
+    X = X[0:20000,:]
+    Y = Y[0:20000]
+    print(X.shape)
+    print(Y.shape)
+    clf_NN.fit(X, Y)
+    predictions = clf_NN.predict(X_test)
+    print(confusion_matrix(Y_test, predictions))
+    print(classification_report(Y_test, predictions))
+    print(clf_NN.score(X_test, Y_test))
 
 
 if __name__ == "__main__":
 
     X, Y, X_pca, Y_pca = load_data()
-    print(X.shape)
-    print(Y.shape)
-    cv = StratifiedKFold(n_splits=3)
-    k_range = range(1, 20, 2)
+
+    cv = StratifiedKFold(n_splits=2)
+    # k_range = range(1, 20, 2)
     #knn_classification(X_pca, Y_pca, k_range, cv)
     #dt_classification(X_pca, Y_pca, cv)
-    #rf_classification(X_pca, Y_pca, cv)
-    svm_classification(X, Y, cv)
+    # #rf_classification(X_pca, Y_pca, cv)
+    # svm_classification(X_pca, Y_pca, cv)
+    NN_classification(X_pca, Y_pca, cv)
