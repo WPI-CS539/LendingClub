@@ -57,6 +57,10 @@ data_df = data_df[data_df['verification_status'].notnull()]
 data_df = data_df[data_df['loan_status'].notnull()]
 data_df = data_df[data_df['last_pymnt_d'].notnull()]
 data_df = data_df[data_df['last_credit_pull_d'].notnull()]
+data_df = data_df[data_df['earliest_cr_line'].notnull()]
+data_df = data_df[data_df['initial_list_status'].notnull()]
+data_df = data_df[data_df['hardship_flag'].notnull()]
+data_df = data_df[data_df['issue_d'].notnull()]
 
 ## Modify loan_status, convert
 def cleanloanstatus(x):
@@ -70,6 +74,14 @@ def cleanloanstatus(x):
         return x
 data_df['loan_status'] = data_df['loan_status'].apply(cleanloanstatus)
 
+## Modify "emp_length": Delete " years", " year", "+", convert string to integer.
+def cleanemplength(x):
+    x = x.replace(" years", "").replace(" year", "").replace("+", "").replace("< ", "-").replace("n/a", "-1")
+    return int(x)
+
+data_df['emp_length'] = data_df['emp_length'].apply(cleanemplength)
+data_df = data_df[data_df['emp_length'] > 0]
+
 ##Separate majority and minority classes
 df_majority = data_df[data_df.loan_status == 1]
 df_minority = data_df[data_df.loan_status == 0]
@@ -77,13 +89,13 @@ df_minority = data_df[data_df.loan_status == 0]
 # Upsample minority class
 df_majority_downsampled = resample(df_majority,
                                  replace=False,  # sample with replacement
-                                 n_samples=50000,  # to match majority class
+                                 n_samples=25000,  # to match majority class
                                  random_state=123)  # reproducible results
 
 # Upsample minority class
-df_minority_downsampled = resample(df_majority,
+df_minority_downsampled = resample(df_minority,
                                  replace=False,  # sample with replacement
-                                 n_samples=50000,  # to match majority class
+                                 n_samples=25000,  # to match majority class
                                  random_state=123)  # reproducible results
 
 # Combine majority class with upsampled minority class
