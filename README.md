@@ -3,8 +3,6 @@ LendingClub is a US peer-to-peer lending company, the company operates an online
 
 Motivation
 Our objective will be to study what factors would influence the company's decision to lend money to clients, and to predict lenders’ future repayment performance. More precisely, there is a column named “Loan Status” which describes each lender’s loan status, the attribute contains 10 classes as shown as below:
-![title](https://github.com/WPI-CS539/LendingClub/tree/master/figure/labels.png)
-https://github.com/WPI-CS539/LendingClub/blob/master/figure/labels.png
 <img src="https://github.com/WPI-CS539/LendingClub/blob/master/figure/labels.png" alt="hi" class="inline"/>
 
 We classify “Current”, “Fully Paid” and “Does not meet the credit policy. Status:Fully Paid” as good status, and others as bad status, so it becomes a binary label.
