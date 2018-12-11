@@ -6,6 +6,7 @@ Our objective will be to study what factors would influence the company's decisi
 <img src="https://github.com/WPI-CS539/LendingClub/blob/master/figure/labels.png" alt="labels" class="inline"/>
 ![useful image](https://github.com/WPI-CS539/LendingClub/blob/master/figure/labels.png)
 <img alt="A Very Basic Example Gallery" src="//github.com/WPI-CS539/LendingClub/blob/master/figure/labels.png"/>
+<br>
 
 We classify “Current”, “Fully Paid” and “Does not meet the credit policy. Status:Fully Paid” as good status, and others as bad status, so it becomes a binary label.
 
