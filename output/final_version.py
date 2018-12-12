@@ -146,10 +146,8 @@ def rf_classification(X, Y, cv):
 
 
 def svm_classification(X, Y, cv):
-    # kernels = ['linear', 'poly', 'rbf', 'sigmoid']
-    # x = [1, 2, 3, 4]
-    kernels = ['linear']
-    x = [1]
+    kernels = ['poly', 'rbf', 'sigmoid']
+    x = [1, 2, 3]
     train_errors = list()
     test_errors = list()
     specificities = list()
