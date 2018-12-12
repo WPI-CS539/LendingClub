@@ -82,25 +82,5 @@ def cleanemplength(x):
 data_df['emp_length'] = data_df['emp_length'].apply(cleanemplength)
 data_df = data_df[data_df['emp_length'] > 0]
 
-##Separate majority and minority classes
-df_majority = data_df[data_df.loan_status == 1]
-df_minority = data_df[data_df.loan_status == 0]
 
-# Upsample minority class
-df_majority_downsampled = resample(df_majority,
-                                 replace=False,  # sample with replacement
-                                 n_samples=25000,  # to match majority class
-                                 random_state=123)  # reproducible results
-
-# Upsample minority class
-df_minority_downsampled = resample(df_minority,
-                                 replace=False,  # sample with replacement
-                                 n_samples=25000,  # to match majority class
-                                 random_state=123)  # reproducible results
-
-# Combine majority class with upsampled minority class
-df_downsampled = pd.concat([df_minority_downsampled, df_majority_downsampled])
-
-# Display new class counts
-print(df_downsampled.loan_status.value_counts())
-df_downsampled.to_csv("clean_result00.csv", index=False)
+data_df.to_csv("clean_result00.csv", index=False)
