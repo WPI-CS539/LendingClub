@@ -432,10 +432,10 @@ def ANN_classification(X, Y, cv):
             X_test = np.asmatrix(X[test])
             Y_train = Y[train]
             Y_test = Y[test]
-            W1, b1, W2, b2 = ann_train(X_train, Y_train, alpha=0.0001*(i * 2), n_epoch=10)
-            Y, P = ann_predict(X_train, W1, b1, W2, b2)
+            W1, b1, W2, b2 = ann_train(X_train, Y_train, alpha=0.0001*(i * 2), n_epoch=1)
+            Y_predict_train, P = ann_predict(X_train, W1, b1, W2, b2)
             Y_predict, P = ann_predict(X_test, W1, b1, W2, b2)
-            cm_train = confusion_matrix(Y_train, Y)
+            cm_train = confusion_matrix(Y_train, Y_predict_train)
             cm = confusion_matrix(Y_test, Y_predict)
             train_accuracy.append((cm_train[1, 1] + cm_train[0, 0]) / (cm_train[0, 0] + cm_train[0, 1] + cm_train[1, 1] + cm_train[1, 0]))
             test_accuracy.append((cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0]))
@@ -586,8 +586,8 @@ if __name__ == "__main__":
     # knn_classification(X_pca, Y_pca, k_range, cv)
     # dt_classification(X_pca, Y_pca, cv)
     # rf_classification(X_pca, Y_pca, cv)
-    svm_classification(X_pca, Y_pca, cv)
-    # ANN_classification(X_pca, Y_pca, cv)
+    #svm_classification(X_pca, Y_pca, cv)
+    ANN_classification(X_pca, Y_pca, cv)
     #Ada_classification(X_pca, Y_pca, cv)
 
     ## before pca
