@@ -130,8 +130,7 @@ def rf_classification(X, Y, cv):
                    'max_features': max_features,
                    'max_depth': max_depth,
                    'min_samples_split': min_samples_split,
-                   'min_samples_leaf': min_samples_leaf,
-                   'return_train_score': [True]}
+                   'min_samples_leaf': min_samples_leaf}
     # Use the random grid to search for best hyperparameters
     # First create the base model to tune
     rf = RandomForestClassifier()
@@ -215,8 +214,7 @@ def svm_classification(X, Y, cv):
     test_errors = list()
     specificities = list()
     # Create the random grid
-    random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['rbf'], 'probability':True,
-                   'return_train_score': [True]}
+    random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['rbf'], 'probability':[True]}
 
     # Use the random grid to search for best hyperparameters
     # First create the base model to tune
@@ -239,7 +237,7 @@ def svm_classification(X, Y, cv):
     train_error = list()
     test_error = list()
     specificity = list()
-    cv = StratifiedKFold(n_splits=10)
+    # cv = StratifiedKFold(n_splits=10)
     for train, test in cv.split(X, Y):
         clf_svm.fit(X[train], Y[train])
         train_error.append(clf_svm.score(X[train], Y[train]))
@@ -266,7 +264,7 @@ def svm_classification(X, Y, cv):
 
     # Create the random grid
     random_grid = {'C': np.logspace(-3, 2, 6), 'degree': [int(x) for x in np.linspace(start=2, stop=5, num=4)],
-                   'gamma': np.logspace(-3, 2, 6), 'kernel': ['poly'], 'probability': [True], 'return_train_score': [True]}
+                   'gamma': np.logspace(-3, 2, 6), 'kernel': ['poly'], 'probability': [True]}
 
     # Use the random grid to search for best hyperparameters
     # First create the base model to tune
@@ -289,7 +287,7 @@ def svm_classification(X, Y, cv):
     train_error = list()
     test_error = list()
     specificity = list()
-    cv = StratifiedKFold(n_splits=10)
+    # cv = StratifiedKFold(n_splits=10)
     for train, test in cv.split(X, Y):
         clf_svm.fit(X[train], Y[train])
         train_error.append(clf_svm.score(X[train], Y[train]))
@@ -315,7 +313,7 @@ def svm_classification(X, Y, cv):
     ## sigmoid
 
     # Create the random grid
-    random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['sigmoid'], 'probability': [True] , 'return_train_score': [True]}
+    random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['sigmoid'], 'probability': [True]}
 
     # Use the random grid to search for best hyperparameters
     # First create the base model to tune
@@ -338,7 +336,7 @@ def svm_classification(X, Y, cv):
     train_error = list()
     test_error = list()
     specificity = list()
-    cv = StratifiedKFold(n_splits=10)
+    # cv = StratifiedKFold(n_splits=10)
     for train, test in cv.split(X, Y):
         clf_svm.fit(X[train], Y[train])
         train_error.append(clf_svm.score(X[train], Y[train]))
@@ -455,28 +453,28 @@ def ANN_classification(X, Y, cv):
     plt.ylabel('Performance')
     plt.show()
 
-# def NN_classification(X, Y, cv):
-#     clf_NN = MLPClassifier(hidden_layer_sizes=(9, 9, 9,),
-#                   activation='tanh', batch_size='auto',
-#                   learning_rate ='constant', learning_rate_init = 0.001,
-#                   max_iter = 200,
-#                   shuffle = True,
-#                   verbose = True,
-#                   warm_start = False,
-#                   early_stopping = True, n_iter_no_change = 30, validation_fraction = 0.1,
-#                   beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08)
-#
-#     X_test = X[20000:25000,:]
-#     Y_test = Y[20000:25000]
-#     X = X[0:20000,:]
-#     Y = Y[0:20000]
-#     print(X.shape)
-#     print(Y.shape)
-#     clf_NN.fit(X, Y)
-#     predictions = clf_NN.predict(X_test)
-#     print(confusion_matrix(Y_test, predictions))
-#     print(classification_report(Y_test, predictions))
-#     print(clf_NN.score(X_test, Y_test))
+def NN_classification(X, Y, cv):
+    clf_NN = MLPClassifier(hidden_layer_sizes=(9, 9, 9,),
+                  activation='tanh', batch_size='auto',
+                  learning_rate ='constant', learning_rate_init = 0.001,
+                  max_iter = 200,
+                  shuffle = True,
+                  verbose = True,
+                  warm_start = False,
+                  early_stopping = True, n_iter_no_change = 30, validation_fraction = 0.1,
+                  beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08)
+
+    X_test = X[20000:25000,:]
+    Y_test = Y[20000:25000]
+    X = X[0:20000,:]
+    Y = Y[0:20000]
+    print(X.shape)
+    print(Y.shape)
+    clf_NN.fit(X, Y)
+    predictions = clf_NN.predict(X_test)
+    print(confusion_matrix(Y_test, predictions))
+    print(classification_report(Y_test, predictions))
+    print(clf_NN.score(X_test, Y_test))
 
 
 def Ada_classification(X, Y, cv):
@@ -490,8 +488,7 @@ def Ada_classification(X, Y, cv):
 
     # Create the random grid
     random_grid = {'n_estimators': n_estimators,
-                   'learning_rate': learning_rate,
-                   'return_train_score': [True]}
+                   'learning_rate': learning_rate}
 
     # Use the random grid to search for best hyperparameters
     # First create the base model to tune
