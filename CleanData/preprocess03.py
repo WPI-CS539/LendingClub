@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
+import numpy as np
 
 data = pd.read_csv("clean_result02.csv", header=0)
 data_df = pd.DataFrame(data)
@@ -18,9 +19,10 @@ print(x.loan_status.value_counts())
 
 
 x = data_df.drop(['loan_status'], axis=1)
-pca = PCA(n_components=9)
+pca = PCA(n_components=75)
 pca.fit(x)
 print(pca.explained_variance_ratio_)
+print(np.cumsum(pca.explained_variance_ratio_))
 X = pd.DataFrame(pca.fit_transform(x))
 X = X.join(y)
 print(X.loan_status.value_counts())
