@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6190ecd0-d5bd-4c50-be1d-ce0a8a7205ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/final_version.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/final_version1.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/final_version1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/final_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/final_version.py" afterDir="false" />
-    </list>
+    <list default="true" id="6190ecd0-d5bd-4c50-be1d-ce0a8a7205ec" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,49 +15,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CleanData/preprocess03.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-17">
-              <caret line="54" selection-start-line="54" selection-end-line="54" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/output/final_version.py">
+        <entry file="file://$PROJECT_DIR$/main/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="10980">
               <caret line="732" column="5" selection-start-line="732" selection-start-column="5" selection-end-line="732" selection-end-column="5" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/result.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/concurrent/futures/_base.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="930">
-              <caret line="383" selection-start-line="383" selection-end-line="383" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Python/3.6/lib/python/site-packages/sklearn/tree/tree.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="366" selection-start-line="366" selection-end-line="366" />
             </state>
           </provider>
         </entry>
@@ -85,6 +45,7 @@
         <option value="$PROJECT_DIR$/final_version1.py" />
         <option value="$PROJECT_DIR$/output/final_version1.py" />
         <option value="$PROJECT_DIR$/output/final_version.py" />
+        <option value="$PROJECT_DIR$/main/main.py" />
       </list>
     </option>
   </component>
@@ -113,13 +74,7 @@
             <path>
               <item name="LendingClub" type="b2602c69:ProjectViewProjectNode" />
               <item name="LendingClub" type="462c0819:PsiDirectoryNode" />
-              <item name="output" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="LendingClub" type="b2602c69:ProjectViewProjectNode" />
-              <item name="LendingClub" type="462c0819:PsiDirectoryNode" />
-              <item name="output" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -242,12 +197,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1544588538444</updated>
-      <workItem from="1544588539949" duration="56412000" />
+      <workItem from="1544588539949" duration="56635000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56412000" />
+    <option name="totallyTimeSpent" value="56635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
@@ -317,10 +272,10 @@
         <state relative-caret-position="-420" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/data/clean_data_with_target.csv">
+    <entry file="file://$PROJECT_DIR$/main/data/clean_data_with_target.csv">
       <provider selected="true" editor-type-id="LargeFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/data/clean_data_with_target_after_pca.csv">
+    <entry file="file://$PROJECT_DIR$/main/data/clean_data_with_target_after_pca.csv">
       <provider editor-type-id="csv-text-editor" />
       <provider selected="true" editor-type-id="LargeFileEditor" />
     </entry>
@@ -370,7 +325,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/final_version.py">
+    <entry file="file://$PROJECT_DIR$/main/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10980">
           <caret line="732" column="5" selection-start-line="732" selection-start-column="5" selection-end-line="732" selection-end-column="5" />
