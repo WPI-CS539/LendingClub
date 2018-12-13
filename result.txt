@@ -1,0 +1,19 @@
+test accuracy rf before pca: 0.8900666666666667
+test specificity rf before pca: 0.9770838917180381
+
+test accuracy rf after pca: 0.7898666666666667
+test specificity rf after pca: 0.7896483078964831
+
+
+test accuracy of ada before pca: 0.8905333333333333
+test specificity of ada before pca: 0.9494773519163763
+
+test accuracy of ada after pca: 0.758
+test specificity of ada after pca: 0.7510285335102853
+
+
+test accuracy of nn before pca: 0.8824666666666666
+test specificity of nn before pca: 0.9308496381667113
+
+test accuracy of nn after pca: 0.6039333333333333
+test specificity of nn after pca: 0.6070338420703384
