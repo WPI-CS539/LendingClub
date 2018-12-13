@@ -48,7 +48,8 @@ def load_data():
     Y_pca_for_test = Y_pca.tail(num30)
     # print(X_for_test.shape,Y_for_test.shape,X_pca_for_test.shape,Y_pca_for_test.shape)
 
-    return X_train, Y_train, X_pca_train, Y_pca_train, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test
+    return X_train.values, Y_train.values.ravel(), X_pca_train.values, Y_pca_train.values.ravel(), X_for_test.values, Y_for_test.values.ravel(), X_pca_for_test.values, Y_pca_for_test.values.ravel()
+
 
 
 def knn_classification(X, Y, k_range, cv):
@@ -157,7 +158,7 @@ def rf_classification(X, Y, cv):
     rf = RandomForestClassifier()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=2, verbose=2,
+    rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
                                    random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     rf_random.fit(X, Y)
@@ -243,7 +244,7 @@ def svm_classification(X, Y, cv, X_for_test, Y_for_test):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=2, verbose=2,
                                    random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
@@ -300,7 +301,7 @@ def svm_classification(X, Y, cv, X_for_test, Y_for_test):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
                                     random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
@@ -355,7 +356,7 @@ def svm_classification(X, Y, cv, X_for_test, Y_for_test):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
                                     random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
@@ -684,7 +685,7 @@ if __name__ == "__main__":
     # knn_classification(X_pca, Y_pca, k_range, cv)
     # dt_classification(X_pca, Y_pca, cv)
     #rf_classification(X_pca, Y_pca, cv)
-    svm_classification(X_pca, Y_pca, cv, X_pca_for_test, Y_pca_for_test)
+    #svm_classification(X_pca, Y_pca, cv, X_pca_for_test, Y_pca_for_test)
     #ANN_classification(X_pca, Y_pca, cv)
     #Ada_classification(X_pca, Y_pca, cv)
 
@@ -692,7 +693,7 @@ if __name__ == "__main__":
     # k_range = range(1, 35, 2)
     # knn_classification(X, Y, k_range, cv)
     # dt_classification(X, Y, cv)
-    #rf_classification(X, Y, cv)
-    svm_classification(X, Y, cv, X_for_test, Y_for_test)
+    rf_classification(X, Y, cv)
+    #svm_classification(X, Y, cv, X_for_test, Y_for_test)
     # ANN_classification(X, Y, cv)
     #Ada_classification(X, Y, cv)
