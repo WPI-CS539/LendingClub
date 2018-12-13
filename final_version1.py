@@ -188,22 +188,32 @@ def ada_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pc
 
 
 def nn_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test):
-    # Before PCA
-    nn = MLPClassifier(activation='tanh', alpha=0.05, batch_size='auto', beta_1=0.9, beta_2=0.999, early_stopping=False, epsilon=1e-8, hidden_layer_sizes=(30,40,30)
-                        , learning_rate='adaptive', learning_rate_init=0.001, max_iter=100, momentum=0.9, nesterovs_momentum=True,
-                       power_t=0.5, random_state=None, shuffle=True, solver='adam', tol=0.0001, validation_fraction=0.1, verbose=False, warm_start=False)
-    nn.fit(X, Y)
-    predictions = nn.predict(X_for_test)
-    cm = confusion_matrix(Y_for_test, predictions)
-    specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
-    accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
-    print("test accuracy of nn before pca:", accuracy)
-    print("test specificity of nn before pca:", specificity)
+    # # Before PCA
+    # nn = MLPClassifier(activation='relu', alpha=0.001, batch_size='auto', beta_1=0.9,
+    #    beta_2=0.999, early_stopping=False, epsilon=1e-08,
+    #    hidden_layer_sizes=(10, 10), learning_rate='adaptive',
+    #    learning_rate_init=0.001, max_iter=200, momentum=0.9,
+    #    nesterovs_momentum=True, power_t=0.5, random_state=None,
+    #    shuffle=True, solver='adam', tol=0.0001, validation_fraction=0.1,
+    #    verbose=False, warm_start=False)
+    #
+    # nn.fit(X, Y)
+    # predictions = nn.predict(X_for_test)
+    # cm = confusion_matrix(Y_for_test, predictions)
+    # specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    # accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    # print("test accuracy of nn before pca:", accuracy)
+    # print("test specificity of nn before pca:", specificity)
 
     # After PCA
-    nn = MLPClassifier(activation='tanh', alpha=0.05, batch_size='auto', beta_1=0.9, beta_2=0.999, early_stopping=False, epsilon=1e-8, hidden_layer_sizes=(30,40,30)
-                        , learning_rate='adaptive', learning_rate_init=0.001, max_iter=100, momentum=0.9, nesterovs_momentum=True,
-                       power_t=0.5, random_state=None, shuffle=True, solver='adam', tol=0.0001, validation_fraction=0.1, verbose=False, warm_start=False)
+    nn = MLPClassifier(activation='relu', alpha=0.001, batch_size='auto', beta_1=0.9,
+       beta_2=0.999, early_stopping=False, epsilon=1e-08,
+       hidden_layer_sizes=(10, 10), learning_rate='constant',
+       learning_rate_init=0.001, max_iter=200, momentum=0.9,
+       nesterovs_momentum=True, power_t=0.5, random_state=None,
+       shuffle=True, solver='adam', tol=0.0001, validation_fraction=0.1,
+       verbose=False, warm_start=False)
+
     nn.fit(X_pca, Y_pca)
     predictions = nn.predict(X_pca_for_test)
     cm = confusion_matrix(Y_pca_for_test, predictions)
@@ -214,30 +224,91 @@ def nn_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca
 
 
 
-def svm_testing(X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test):
-    # Before PCA
-    svm_clf = svm.SVC()
-    predictions = svm_clf.predict(X_for_test)
-    cm = confusion_matrix(Y_for_test, predictions)
-    specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
-    accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
-    print("test accuracy of ada before pca:", accuracy)
-    print("test specificity of ada before pca:", specificity)
+def poly_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test):
+    # # Before PCA
+    # svm_clf = svm.SVC(C=10.0, cache_size=200, class_weight=None, coef0=0.0,
+    #           decision_function_shape='ovr', degree=2, gamma=0.01, kernel='poly',
+    #           max_iter=-1, probability=True, random_state=None, shrinking=True,
+    #           tol=0.001, verbose=False)
+    #
+    # svm_clf.fit(X, Y)
+    # predictions = svm_clf.predict(X_for_test)
+    # cm = confusion_matrix(Y_for_test, predictions)
+    # specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    # accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    # print("test accuracy of poly before pca:", accuracy)
+    # print("test specificity of poly before pca:", specificity)
 
     # After PCA
-    svm_clf = svm.SVC(C=0.1, cache_size=200, class_weight=None, coef0=0.0,
-      decision_function_shape='ovr', degree=3, gamma=0.01, kernel='sigmoid',
-      max_iter=-1, probability=True, random_state=None, shrinking=True,
-      tol=0.001, verbose=False)
+    svm_clf = svm.SVC(C=0.10000000000000001, cache_size=200, class_weight=None, coef0=0.0,
+              decision_function_shape='ovr', degree=3, gamma=0.10000000000000001, kernel='poly',
+              max_iter=-1, probability=True, random_state=None, shrinking=True,
+              tol=0.001, verbose=False)
+    svm_clf.fit(X_pca, Y_pca)
     predictions = svm_clf.predict(X_pca_for_test)
     cm = confusion_matrix(Y_pca_for_test, predictions)
     specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
     accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
-    print("test accuracy of ada after pca:", accuracy)
-    print("test specificity of ada after pca:", specificity)
+    print("test accuracy of poly after pca:", accuracy)
+    print("test specificity of poly after pca:", specificity)
 
 
+def rbf_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test):
+    # # Before PCA
+    # svm_clf = svm.SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+    #           decision_function_shape='ovr', degree=3, gamma=0.01, kernel='rbf',
+    #           max_iter=-1, probability=True, random_state=None, shrinking=True,
+    #           tol=0.001, verbose=False)
+    #
+    # svm_clf.fit(X, Y)
+    # predictions = svm_clf.predict(X_for_test)
+    # cm = confusion_matrix(Y_for_test, predictions)
+    # specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    # accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    # print("test accuracy of rbf before pca:", accuracy)
+    # print("test specificity of rbf before pca:", specificity)
 
+    # After PCA
+    svm_clf = svm.SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+              decision_function_shape='ovr', degree=3, gamma=0.01, kernel='rbf',
+              max_iter=-1, probability=True, random_state=None, shrinking=True,
+              tol=0.001, verbose=False)
+    svm_clf.fit(X_pca, Y_pca)
+    predictions = svm_clf.predict(X_pca_for_test)
+    cm = confusion_matrix(Y_pca_for_test, predictions)
+    specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    print("test accuracy of rbf after pca:", accuracy)
+    print("test specificity of rbf after pca:", specificity)
+
+
+def sigmoid_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test):
+    # # Before PCA
+    # svm_clf = svm.SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,
+    #           decision_function_shape='ovr', degree=3, gamma=0.001, kernel='sigmoid',
+    #           max_iter=-1, probability=True, random_state=None, shrinking=True,
+    #           tol=0.001, verbose=False)
+    #
+    # svm_clf.fit(X, Y)
+    # predictions = svm_clf.predict(X_for_test)
+    # cm = confusion_matrix(Y_for_test, predictions)
+    # specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    # accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    # print("test accuracy of sigmoid before pca:", accuracy)
+    # print("test specificity of sigmoid before pca:", specificity)
+
+    # After PCA
+    svm_clf = svm.SVC(C=0.1, cache_size=200, class_weight=None, coef0=0.0,
+              decision_function_shape='ovr', degree=3, gamma=0.01, kernel='sigmoid',
+              max_iter=-1, probability=True, random_state=None, shrinking=True,
+              tol=0.001, verbose=False)
+    svm_clf.fit(X_pca, Y_pca)
+    predictions = svm_clf.predict(X_pca_for_test)
+    cm = confusion_matrix(Y_pca_for_test, predictions)
+    specificity = cm[1, 1] / (cm[1, 1] + cm[1, 0])
+    accuracy = (cm[1, 1] + cm[0, 0]) / (cm[0, 0] + cm[0, 1] + cm[1, 1] + cm[1, 0])
+    print("test accuracy of sigmoid after pca:", accuracy)
+    print("test specificity of sigmoid after pca:", specificity)
 
 
 def rf_classification(X, Y, cv):
@@ -808,6 +879,9 @@ if __name__ == "__main__":
     #svm_classification(X, Y, cv, X_for_test, Y_for_test)
     # ANN_classification(X, Y, cv)
     #Ada_classification(X, Y, cv)
-    rf_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
-    ada_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
+    # rf_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
+    # ada_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
     nn_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
+    # poly_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
+    rbf_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
+    sigmoid_testing(X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test)
