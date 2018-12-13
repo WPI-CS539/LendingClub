@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6190ecd0-d5bd-4c50-be1d-ce0a8a7205ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS539ML_Final_Presentation.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/CS539ML_Final_Presentation.pptx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/final_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/final_version.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,8 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/output/final_version.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="690" lean-forward="true" selection-start-line="690" selection-end-line="690" />
+            <state relative-caret-position="394">
+              <caret line="713" column="4" selection-start-line="713" selection-start-column="4" selection-end-line="713" selection-end-column="4" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -213,12 +214,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1544588538444</updated>
-      <workItem from="1544588539949" duration="36033000" />
+      <workItem from="1544588539949" duration="38839000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36033000" />
+    <option name="totallyTimeSpent" value="38839000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
@@ -240,7 +241,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="SciView" visible="true" weight="0.39243877" />
+      <window_info anchor="right" id="SciView" weight="0.5821485" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -322,8 +323,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/output/final_version.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="690" lean-forward="true" selection-start-line="690" selection-end-line="690" />
+        <state relative-caret-position="394">
+          <caret line="713" column="4" selection-start-line="713" selection-start-column="4" selection-end-line="713" selection-end-column="4" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
