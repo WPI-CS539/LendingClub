@@ -262,115 +262,115 @@ def svm_classification(X, Y, cv, X_for_test, Y_for_test):
     test_errors = list()
     specificities = list()
 
-    # # Create the random grid
-    # random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['rbf'], 'probability':[True]}
-    #
-    # # Use the random grid to search for best hyperparameters
-    # # First create the base model to tune
-    # svm_ = svm.SVC()
-    # # Random search of parameters, using 3 fold cross validation,
-    # # search across 100 different combinations, and use all available cores
-    # svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=2, verbose=2,
-    #                                random_state=42, n_jobs=-1, return_train_score = True)
-    # # Fit the random search model
-    # svm_random.fit(X, Y)
-    # print(svm_random.cv_results_)
-    # print(svm_random.best_estimator_)
-    # print(svm_random.best_score_)
-    # print(svm_random.cv_results_["mean_test_score"])
-    # print(svm_random.cv_results_["mean_train_score"])
-    #
-    # test_score = svm_random.cv_results_["mean_test_score"]
-    # train_score = svm_random.cv_results_["mean_train_score"]
-    # clf_svm = svm_random.best_estimator_
-    #
-    # train_error = list()
-    # test_error = list()
-    # specificity = list()
-    # # cv = StratifiedKFold(n_splits=10)
-    # clf_svm.fit(X, Y)
-    # train_error.append(clf_svm.score(X, Y))
-    # test_error.append(clf_svm.score(X_for_test, Y_for_test))
-    # predictions = clf_svm.predict(X_for_test)
-    # cm = confusion_matrix(Y_for_test, predictions)
-    # specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
-    # # for train, test in cv.split(X, Y):
-    # #     clf_svm.fit(X[train], Y[train])
-    # #     train_error.append(clf_svm.score(X[train], Y[train]))
-    # #     test_error.append(clf_svm.score(X[test], Y[test]))
-    # #     predictions = clf_svm.predict(X[test])
-    # #     cm = confusion_matrix(Y[test], predictions)
-    # #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
-    # specificities.append(sum(specificity) / len(specificity))
-    # train_errors.append(sum(train_error) / len(train_error))
-    # test_errors.append(sum(test_error) / len(test_error))
-    # print("test accuracy:", test_errors)
-    # print("test specificity:", specificities)
-    #
-    # plt.figure()
-    # plt.plot(range(len(test_score)), test_score, label='Test Score')
-    # plt.plot(range(len(train_score)), train_score, label='Train Score')
-    # plt.legend(loc='lower left')
-    # plt.title('Evaluation of SVM model with "rbf"')
-    # plt.xlabel('Different Parameters')
-    # plt.ylabel('Performance')
-    # plt.show()
-    #
-    # ## poly
-    #
-    # # Create the random grid
-    # random_grid = {'C': np.logspace(-3, 2, 6), 'degree': [int(x) for x in np.linspace(start=2, stop=5, num=4)],
-    #                'gamma': np.logspace(-3, 2, 6), 'kernel': ['poly'], 'probability': [True]}
-    #
-    # # Use the random grid to search for best hyperparameters
-    # # First create the base model to tune
-    # svm_ = svm.SVC()
-    # # Random search of parameters, using 3 fold cross validation,
-    # # search across 100 different combinations, and use all available cores
-    # svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
-    #                                 random_state=42, n_jobs=-1, return_train_score = True)
-    # # Fit the random search model
-    # svm_random.fit(X, Y)
-    # print(svm_random.cv_results_)
-    # print(svm_random.best_estimator_)
-    # print(svm_random.best_score_)
-    # print(svm_random.cv_results_["mean_test_score"])
-    # print(svm_random.cv_results_["mean_train_score"])
-    #
-    # test_score = svm_random.cv_results_["mean_test_score"]
-    # train_score = svm_random.cv_results_["mean_train_score"]
-    # clf_svm = svm_random.best_estimator_
-    # train_error = list()
-    # test_error = list()
-    # specificity = list()
-    # # cv = StratifiedKFold(n_splits=10)
-    # clf_svm.fit(X, Y)
-    # train_error.append(clf_svm.score(X, Y))
-    # test_error.append(clf_svm.score(X_for_test, Y_for_test))
-    # predictions = clf_svm.predict(X_for_test)
-    # cm = confusion_matrix(Y_for_test, predictions)
-    # specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
-    # # for train, test in cv.split(X, Y):
-    # #     clf_svm.fit(X[train], Y[train])
-    # #     train_error.append(clf_svm.score(X[train], Y[train]))
-    # #     test_error.append(clf_svm.score(X[test], Y[test]))
-    # #     predictions = clf_svm.predict(X[test])
-    # #     cm = confusion_matrix(Y[test], predictions)
-    # #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
-    # specificities.append(sum(specificity) / len(specificity))
-    # train_errors.append(sum(train_error) / len(train_error))
-    # test_errors.append(sum(test_error) / len(test_error))
-    # print("test accuracy:", test_errors)
-    # print("test specificity:", specificities)
-    #
-    # plt.figure()
-    # plt.plot(range(len(test_score)), test_score, label='Test Score')
-    # plt.plot(range(len(train_score)), train_score, label='Train Score')
-    # plt.legend(loc='lower left')
-    # plt.title('Evaluation of SVM model with "poly"')
-    # plt.xlabel('Different Parameters')
-    # plt.ylabel('Performance')
-    # plt.show()
+    # Create the random grid
+    random_grid = {'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6), 'kernel': ['rbf'], 'probability':[True]}
+
+    # Use the random grid to search for best hyperparameters
+    # First create the base model to tune
+    svm_ = svm.SVC()
+    # Random search of parameters, using 3 fold cross validation,
+    # search across 100 different combinations, and use all available cores
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
+                                   random_state=42, n_jobs=-1, return_train_score = True)
+    # Fit the random search model
+    svm_random.fit(X, Y)
+    print(svm_random.cv_results_)
+    print(svm_random.best_estimator_)
+    print(svm_random.best_score_)
+    print(svm_random.cv_results_["mean_test_score"])
+    print(svm_random.cv_results_["mean_train_score"])
+
+    test_score = svm_random.cv_results_["mean_test_score"]
+    train_score = svm_random.cv_results_["mean_train_score"]
+    clf_svm = svm_random.best_estimator_
+
+    train_error = list()
+    test_error = list()
+    specificity = list()
+    # cv = StratifiedKFold(n_splits=10)
+    clf_svm.fit(X, Y)
+    train_error.append(clf_svm.score(X, Y))
+    test_error.append(clf_svm.score(X_for_test, Y_for_test))
+    predictions = clf_svm.predict(X_for_test)
+    cm = confusion_matrix(Y_for_test, predictions)
+    specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    # for train, test in cv.split(X, Y):
+    #     clf_svm.fit(X[train], Y[train])
+    #     train_error.append(clf_svm.score(X[train], Y[train]))
+    #     test_error.append(clf_svm.score(X[test], Y[test]))
+    #     predictions = clf_svm.predict(X[test])
+    #     cm = confusion_matrix(Y[test], predictions)
+    #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    specificities.append(sum(specificity) / len(specificity))
+    train_errors.append(sum(train_error) / len(train_error))
+    test_errors.append(sum(test_error) / len(test_error))
+    print("test accuracy:", test_errors)
+    print("test specificity:", specificities)
+
+    plt.figure()
+    plt.plot(range(len(test_score)), test_score, label='Test Score')
+    plt.plot(range(len(train_score)), train_score, label='Train Score')
+    plt.legend(loc='lower left')
+    plt.title('Evaluation of SVM model with "rbf"')
+    plt.xlabel('Different Parameters')
+    plt.ylabel('Performance')
+    plt.show()
+
+    ## poly
+
+    # Create the random grid
+    random_grid = {'C': np.logspace(-3, 2, 6), 'degree': [int(x) for x in np.linspace(start=2, stop=5, num=4)],
+                   'gamma': np.logspace(-3, 2, 6), 'kernel': ['poly'], 'probability': [True]}
+
+    # Use the random grid to search for best hyperparameters
+    # First create the base model to tune
+    svm_ = svm.SVC()
+    # Random search of parameters, using 3 fold cross validation,
+    # search across 100 different combinations, and use all available cores
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
+                                    random_state=42, n_jobs=-1, return_train_score = True)
+    # Fit the random search model
+    svm_random.fit(X, Y)
+    print(svm_random.cv_results_)
+    print(svm_random.best_estimator_)
+    print(svm_random.best_score_)
+    print(svm_random.cv_results_["mean_test_score"])
+    print(svm_random.cv_results_["mean_train_score"])
+
+    test_score = svm_random.cv_results_["mean_test_score"]
+    train_score = svm_random.cv_results_["mean_train_score"]
+    clf_svm = svm_random.best_estimator_
+    train_error = list()
+    test_error = list()
+    specificity = list()
+    # cv = StratifiedKFold(n_splits=10)
+    clf_svm.fit(X, Y)
+    train_error.append(clf_svm.score(X, Y))
+    test_error.append(clf_svm.score(X_for_test, Y_for_test))
+    predictions = clf_svm.predict(X_for_test)
+    cm = confusion_matrix(Y_for_test, predictions)
+    specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    # for train, test in cv.split(X, Y):
+    #     clf_svm.fit(X[train], Y[train])
+    #     train_error.append(clf_svm.score(X[train], Y[train]))
+    #     test_error.append(clf_svm.score(X[test], Y[test]))
+    #     predictions = clf_svm.predict(X[test])
+    #     cm = confusion_matrix(Y[test], predictions)
+    #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    specificities.append(sum(specificity) / len(specificity))
+    train_errors.append(sum(train_error) / len(train_error))
+    test_errors.append(sum(test_error) / len(test_error))
+    print("test accuracy:", test_errors)
+    print("test specificity:", specificities)
+
+    plt.figure()
+    plt.plot(range(len(test_score)), test_score, label='Test Score')
+    plt.plot(range(len(train_score)), train_score, label='Train Score')
+    plt.legend(loc='lower left')
+    plt.title('Evaluation of SVM model with "poly"')
+    plt.xlabel('Different Parameters')
+    plt.ylabel('Performance')
+    plt.show()
 
     ## sigmoid
 
@@ -711,7 +711,7 @@ if __name__ == "__main__":
     # knn_classification(X_pca, Y_pca, k_range, cv)
     # dt_classification(X_pca, Y_pca, cv)
     #rf_classification(X_pca, Y_pca, cv)
-    svm_classification(X_pca, Y_pca, cv, X_pca_for_test, Y_pca_for_test)
+    #svm_classification(X_pca, Y_pca, cv, X_pca_for_test, Y_pca_for_test)
     #ANN_classification(X_pca, Y_pca, cv)
     #Ada_classification(X_pca, Y_pca, cv)
 
@@ -720,6 +720,6 @@ if __name__ == "__main__":
     # knn_classification(X, Y, k_range, cv)
     # dt_classification(X, Y, cv)
     #rf_classification(X, Y, cv)
-    #svm_classification(X, Y, cv, X_for_test, Y_for_test)
+    svm_classification(X, Y, cv, X_for_test, Y_for_test)
     # ANN_classification(X, Y, cv)
     #Ada_classification(X, Y, cv)
