@@ -52,6 +52,7 @@ df_minority_downsampled = resample(df_minority,
 
 # Combine majority class with upsampled minority class
 df_downsampled = pd.concat([df_minority_downsampled, df_majority_downsampled])
+
 # Display new class counts
 print(df_downsampled.loan_status.value_counts())
 df_downsampled.to_csv("downsampled.csv", index=False)

@@ -23,11 +23,32 @@ def load_data():
     data_pca = pd.read_csv(os.path.join(pwd, "data", file_name2)).values
     np.random.shuffle(data)
     np.random.shuffle(data_pca)
+
     Y = data[:, -1]
     X = np.delete(data, -1, axis=1)
     Y_pca = data_pca[:, -1]
     X_pca = np.delete(data_pca, -1, axis=1)
-    return X, Y, X_pca, Y_pca
+
+    num30 = 15000
+    num70 = 35000
+    X = pd.DataFrame(X)
+    Y = pd.DataFrame(Y)
+    X_pca = pd.DataFrame(X_pca)
+    Y_pca = pd.DataFrame(Y_pca)
+
+    X_train = X.head(num70)
+    Y_train = Y.head(num70)
+    X_pca_train = X_pca.head(num70)
+    Y_pca_train = Y_pca.head(num70)
+    # print(X_train.shape,Y_train.shape,X_pca_train.shape,Y_pca_train.shape)
+
+    X_for_test = X.tail(num30)
+    Y_for_test = Y.tail(num30)
+    X_pca_for_test = X_pca.tail(num30)
+    Y_pca_for_test = Y_pca.tail(num30)
+    # print(X_for_test.shape,Y_for_test.shape,X_pca_for_test.shape,Y_pca_for_test.shape)
+
+    return X_train, Y_train, X_pca_train, Y_pca_train, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test
 
 
 def knn_classification(X, Y, k_range, cv):
@@ -137,23 +158,24 @@ def rf_classification(X, Y, cv):
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
     rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=2, verbose=2,
-                                   random_state=42, n_jobs=-1)
+                                   random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     rf_random.fit(X, Y)
     print(rf_random.cv_results_)
     print(rf_random.best_estimator_)
     print(rf_random.best_score_)
-    print(rf_random.cv_results_["mean_test_score"])
-    print(rf_random.cv_results_["mean_train_score"])
 
     test_score = rf_random.cv_results_["mean_test_score"]
     train_score = rf_random.cv_results_["mean_train_score"]
+    print(test_score)
+    print(train_score)
     clf_rf = rf_random.best_estimator_
     train_error = list()
     test_error = list()
     specificity = list()
-    cv = StratifiedKFold(n_splits=10)
+    # cv = StratifiedKFold(n_splits=10)
     for train, test in cv.split(X, Y):
+        print("here")
         clf_rf.fit(X[train], Y[train])
         train_error.append(clf_rf.score(X[train], Y[train]))
         test_error.append(clf_rf.score(X[test], Y[test]))
@@ -208,7 +230,7 @@ def rf_classification(X, Y, cv):
     # plt.show()
 
 
-def svm_classification(X, Y, cv):
+def svm_classification(X, Y, cv, X_for_test, Y_for_test):
     ## rbf
     train_errors = list()
     test_errors = list()
@@ -221,8 +243,8 @@ def svm_classification(X, Y, cv):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
-                                   random_state=42, n_jobs=-1)
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+                                   random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
     print(svm_random.cv_results_)
@@ -234,17 +256,24 @@ def svm_classification(X, Y, cv):
     test_score = svm_random.cv_results_["mean_test_score"]
     train_score = svm_random.cv_results_["mean_train_score"]
     clf_svm = svm_random.best_estimator_
+
     train_error = list()
     test_error = list()
     specificity = list()
     # cv = StratifiedKFold(n_splits=10)
-    for train, test in cv.split(X, Y):
-        clf_svm.fit(X[train], Y[train])
-        train_error.append(clf_svm.score(X[train], Y[train]))
-        test_error.append(clf_svm.score(X[test], Y[test]))
-        predictions = clf_svm.predict(X[test])
-        cm = confusion_matrix(Y[test], predictions)
-        specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    clf_svm.fit(X, Y)
+    train_error.append(clf_svm.score(X, Y))
+    test_error.append(clf_svm.score(X_for_test, Y_for_test))
+    predictions = clf_svm.predict(X_for_test)
+    cm = confusion_matrix(Y_for_test, predictions)
+    specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    # for train, test in cv.split(X, Y):
+    #     clf_svm.fit(X[train], Y[train])
+    #     train_error.append(clf_svm.score(X[train], Y[train]))
+    #     test_error.append(clf_svm.score(X[test], Y[test]))
+    #     predictions = clf_svm.predict(X[test])
+    #     cm = confusion_matrix(Y[test], predictions)
+    #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
     specificities.append(sum(specificity) / len(specificity))
     train_errors.append(sum(train_error) / len(train_error))
     test_errors.append(sum(test_error) / len(test_error))
@@ -271,8 +300,8 @@ def svm_classification(X, Y, cv):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
-                                    random_state=42, n_jobs=-1)
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+                                    random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
     print(svm_random.cv_results_)
@@ -288,13 +317,19 @@ def svm_classification(X, Y, cv):
     test_error = list()
     specificity = list()
     # cv = StratifiedKFold(n_splits=10)
-    for train, test in cv.split(X, Y):
-        clf_svm.fit(X[train], Y[train])
-        train_error.append(clf_svm.score(X[train], Y[train]))
-        test_error.append(clf_svm.score(X[test], Y[test]))
-        predictions = clf_svm.predict(X[test])
-        cm = confusion_matrix(Y[test], predictions)
-        specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    clf_svm.fit(X, Y)
+    train_error.append(clf_svm.score(X, Y))
+    test_error.append(clf_svm.score(X_for_test, Y_for_test))
+    predictions = clf_svm.predict(X_for_test)
+    cm = confusion_matrix(Y_for_test, predictions)
+    specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    # for train, test in cv.split(X, Y):
+    #     clf_svm.fit(X[train], Y[train])
+    #     train_error.append(clf_svm.score(X[train], Y[train]))
+    #     test_error.append(clf_svm.score(X[test], Y[test]))
+    #     predictions = clf_svm.predict(X[test])
+    #     cm = confusion_matrix(Y[test], predictions)
+    #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
     specificities.append(sum(specificity) / len(specificity))
     train_errors.append(sum(train_error) / len(train_error))
     test_errors.append(sum(test_error) / len(test_error))
@@ -320,8 +355,8 @@ def svm_classification(X, Y, cv):
     svm_ = svm.SVC()
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
-    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
-                                    random_state=42, n_jobs=-1)
+    svm_random = RandomizedSearchCV(estimator=svm_, param_distributions=random_grid, n_iter=10, cv=1, verbose=2,
+                                    random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     svm_random.fit(X, Y)
     print(svm_random.cv_results_)
@@ -337,13 +372,19 @@ def svm_classification(X, Y, cv):
     test_error = list()
     specificity = list()
     # cv = StratifiedKFold(n_splits=10)
-    for train, test in cv.split(X, Y):
-        clf_svm.fit(X[train], Y[train])
-        train_error.append(clf_svm.score(X[train], Y[train]))
-        test_error.append(clf_svm.score(X[test], Y[test]))
-        predictions = clf_svm.predict(X[test])
-        cm = confusion_matrix(Y[test], predictions)
-        specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    clf_svm.fit(X, Y)
+    train_error.append(clf_svm.score(X, Y))
+    test_error.append(clf_svm.score(X_for_test, Y_for_test))
+    predictions = clf_svm.predict(X_for_test)
+    cm = confusion_matrix(Y_for_test, predictions)
+    specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    # for train, test in cv.split(X, Y):
+    #     clf_svm.fit(X[train], Y[train])
+    #     train_error.append(clf_svm.score(X[train], Y[train]))
+    #     test_error.append(clf_svm.score(X[test], Y[test]))
+    #     predictions = clf_svm.predict(X[test])
+    #     cm = confusion_matrix(Y[test], predictions)
+    #     specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
     specificities.append(sum(specificity) / len(specificity))
     train_errors.append(sum(train_error) / len(train_error))
     test_errors.append(sum(test_error) / len(test_error))
@@ -454,27 +495,84 @@ def ANN_classification(X, Y, cv):
     plt.show()
 
 def NN_classification(X, Y, cv):
-    clf_NN = MLPClassifier(hidden_layer_sizes=(9, 9, 9,),
-                  activation='tanh', batch_size='auto',
-                  learning_rate ='constant', learning_rate_init = 0.001,
-                  max_iter = 200,
-                  shuffle = True,
-                  verbose = True,
-                  warm_start = False,
-                  early_stopping = True, n_iter_no_change = 30, validation_fraction = 0.1,
-                  beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08)
+    train_errors = list()
+    test_errors = list()
+    specificities = list()
 
-    X_test = X[20000:25000,:]
-    Y_test = Y[20000:25000]
-    X = X[0:20000,:]
-    Y = Y[0:20000]
-    print(X.shape)
-    print(Y.shape)
-    clf_NN.fit(X, Y)
-    predictions = clf_NN.predict(X_test)
-    print(confusion_matrix(Y_test, predictions))
-    print(classification_report(Y_test, predictions))
-    print(clf_NN.score(X_test, Y_test))
+    # Create the random grid
+    random_grid = {'hidden_layer_sizes': [(40,40,40), (30,40,30), (40,)],
+                'activation': ['tanh', 'relu', 'logistic'],
+                'solver': ['sgd', 'adam'],
+                'alpha': [0.0001, 0.05, 0.005, 0.1],
+                'learning_rate': ['constant','adaptive']}
+
+    # Use the random grid to search for best hyperparameters
+    # First create the base model to tune
+    nn = MLPClassifier(max_iter=100)
+    # Random search of parameters, using 3 fold cross validation,
+    # search across 100 different combinations, and use all available cores
+    nn_random = RandomizedSearchCV(estimator=nn, param_distributions=random_grid, n_iter=50, cv=2, verbose=2,
+                                   random_state=42, n_jobs=-1, return_train_score=True)
+    # Fit the random search model
+    nn_random.fit(X, Y)
+    print(nn_random.cv_results_)
+    print(nn_random.best_estimator_)
+    print(nn_random.best_score_)
+    print(nn_random.cv_results_["mean_test_score"])
+    print(nn_random.cv_results_["mean_train_score"])
+
+    test_score = nn_random.cv_results_["mean_test_score"]
+    train_score = nn_random.cv_results_["mean_train_score"]
+    clf_nn = nn_random.best_estimator_
+    train_error = list()
+    test_error = list()
+    specificity = list()
+    cv = StratifiedKFold(n_splits=10)
+    for train, test in cv.split(X, Y):
+        clf_nn.fit(X[train], Y[train])
+        train_error.append(clf_nn.score(X[train], Y[train]))
+        test_error.append(clf_nn.score(X[test], Y[test]))
+        predictions = clf_nn.predict(X[test])
+        cm = confusion_matrix(Y[test], predictions)
+        specificity.append(cm[1, 1] / (cm[1, 1] + cm[1, 0]))
+    specificities.append(sum(specificity) / len(specificity))
+    train_errors.append(sum(train_error) / len(train_error))
+    test_errors.append(sum(test_error) / len(test_error))
+    print("test accuracy:", test_errors)
+    print("test specificity:", specificities)
+
+    plt.figure()
+    plt.plot(range(len(test_score)), test_score, label='Test Score')
+    plt.plot(range(len(train_score)), train_score, label='Train Score')
+    plt.legend(loc='lower left')
+    plt.title('Evaluation of Neural Network model')
+    plt.xlabel('Different Parameters')
+    plt.ylabel('Performance')
+    plt.show()
+
+
+
+    # clf_NN = MLPClassifier(hidden_layer_sizes=(9, 9, 9,),
+    #               activation='tanh', batch_size='auto',
+    #               learning_rate ='constant', learning_rate_init = 0.001,
+    #               max_iter = 200,
+    #               shuffle = True,
+    #               verbose = True,
+    #               warm_start = False,
+    #               early_stopping = True, n_iter_no_change = 30, validation_fraction = 0.1,
+    #               beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08)
+    #
+    # X_test = X[20000:25000,:]
+    # Y_test = Y[20000:25000]
+    # X = X[0:20000,:]
+    # Y = Y[0:20000]
+    # print(X.shape)
+    # print(Y.shape)
+    # clf_NN.fit(X, Y)
+    # predictions = clf_NN.predict(X_test)
+    # print(confusion_matrix(Y_test, predictions))
+    # print(classification_report(Y_test, predictions))
+    # print(clf_NN.score(X_test, Y_test))
 
 
 def Ada_classification(X, Y, cv):
@@ -496,7 +594,7 @@ def Ada_classification(X, Y, cv):
     # Random search of parameters, using 3 fold cross validation,
     # search across 100 different combinations, and use all available cores
     ab_random = RandomizedSearchCV(estimator=ab, param_distributions=random_grid, n_iter=5, cv=2, verbose=2,
-                                   random_state=42, n_jobs=-1)
+                                   random_state=42, n_jobs=-1, return_train_score = True)
     # Fit the random search model
     ab_random.fit(X, Y)
     print(ab_random.cv_results_)
@@ -578,16 +676,16 @@ def Ada_classification(X, Y, cv):
 
 if __name__ == "__main__":
 
-    X, Y, X_pca, Y_pca = load_data()
+    X, Y, X_pca, Y_pca, X_for_test, Y_for_test, X_pca_for_test, Y_pca_for_test = load_data()
     cv = StratifiedKFold(n_splits=2)
 
     ## after pca
     # k_range = range(1, 35, 2)
     # knn_classification(X_pca, Y_pca, k_range, cv)
     # dt_classification(X_pca, Y_pca, cv)
-    # rf_classification(X_pca, Y_pca, cv)
-    #svm_classification(X_pca, Y_pca, cv)
-    ANN_classification(X_pca, Y_pca, cv)
+    #rf_classification(X_pca, Y_pca, cv)
+    svm_classification(X_pca, Y_pca, cv, X_pca_for_test, Y_pca_for_test)
+    #ANN_classification(X_pca, Y_pca, cv)
     #Ada_classification(X_pca, Y_pca, cv)
 
     ## before pca
@@ -595,6 +693,6 @@ if __name__ == "__main__":
     # knn_classification(X, Y, k_range, cv)
     # dt_classification(X, Y, cv)
     #rf_classification(X, Y, cv)
-    # svm_classification(X, Y, cv)
+    svm_classification(X, Y, cv, X_for_test, Y_for_test)
     # ANN_classification(X, Y, cv)
     #Ada_classification(X, Y, cv)
