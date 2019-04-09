@@ -31,7 +31,7 @@ data_df = x
 print(data_df.loan_status.value_counts())
 print(data_df.shape)
 
-
+#
 # Downsample to 5W
 
 df_majority = data_df[data_df.loan_status == 1.0]
